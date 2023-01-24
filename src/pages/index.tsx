@@ -11,7 +11,7 @@ const Home: NextPage = () => {
   const port = getPort(text)
   return (
     <Page>
-      <Main className='flex flex-col space-y-4 p-2'>
+      <Main className='flex-grow flex-col justify-center space-y-4 p-2'>
         <div className='relative border-b-2 border-cb-blue focus-within:border-cb-pink'>
           <input
             className='peer block w-full appearance-none bg-transparent focus:outline-none'
