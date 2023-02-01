@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import type { ChangeEvent } from 'react'
+import { useEffect, useState } from 'react'
 import { type NextPage } from 'next'
+import { useRouter } from 'next/router'
 
 import Page from '@/components/page'
 import Main from '@/components/design/main'
@@ -7,8 +9,32 @@ import getPort from '@/lib/getPort'
 import copyToClipboard from '@/lib/copyToClipboard'
 
 const Home: NextPage = () => {
-  const [text, setText] = useState('')
-  const port = getPort(text)
+  const router = useRouter()
+  const { query } = router
+  const [text, setText] = useState(query.q ?? '')
+  useEffect(() => {
+    if (query.q) {
+      setText(query.q)
+    }
+  }, [query])
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    setText(value)
+    const url: {
+      pathname: string
+      query: null | { q: string }
+    } = {
+      pathname: router.pathname,
+      query: null,
+    }
+    if (value) {
+      url.query = {
+        q: value,
+      }
+    }
+    router.push(url).catch(err => console.log(err))
+  }
+  const port = getPort(text as string)
   return (
     <Page>
       <Main className='flex-grow flex-col justify-center space-y-4 p-2'>
@@ -19,7 +45,7 @@ const Home: NextPage = () => {
             name='text'
             placeholder=' '
             value={text}
-            onChange={e => setText(e.target.value)}
+            onChange={handleChange}
           />
           <label
             className='absolute top-0 z-[-1] origin-[0] text-cb-pink duration-300 peer-focus-within:-translate-y-4 peer-focus-within:scale-75 peer-focus-within:text-cb-yellow'
