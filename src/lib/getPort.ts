@@ -9,7 +9,7 @@ const getPort = (text: string) => {
     8: ['t', 'u', 'v'],
     9: ['w', 'x', 'y', 'z'],
   }
-  const port = [...text]
+  const port = [...text.toLowerCase()]
     .map(char => {
       const entry = Object.entries(numberToLetter).find(([, value]) => {
         if (value.some(v => v === char)) {
