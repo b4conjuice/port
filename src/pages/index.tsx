@@ -2,6 +2,7 @@ import type { ChangeEvent } from 'react'
 import { useEffect, useState } from 'react'
 import { type NextPage } from 'next'
 import { useRouter } from 'next/router'
+import classNames from 'classnames'
 
 import Page from '@/components/page'
 import Main from '@/components/design/main'
@@ -55,13 +56,27 @@ const Home: NextPage = () => {
           </label>
         </div>
         <button
-          className='group w-full cursor-pointer rounded-lg border-none bg-cb-dark-blue text-center text-lg'
+          className='group w-full cursor-pointer rounded-lg border-none bg-cb-dark-blue text-center text-lg disabled:pointer-events-none disabled:opacity-25'
           onClick={() => copyToClipboard(port)}
+          disabled={!port}
         >
           <span className='block translate-y-[-4px] transform rounded-lg bg-[#5a3e84] p-3 text-lg duration-[600ms] ease-[cubic-bezier(.3,.7,.4,1)] hover:ease-[cubic-bezier(.3,.7,.4,1.5)] group-hover:translate-y-[-6px] group-hover:duration-[250ms] group-active:translate-y-[-2px] group-active:duration-[34ms]'>
             copy port: {port}
           </span>
         </button>
+        <a
+          className={classNames(
+            'group w-full cursor-pointer rounded-lg border-none bg-cb-dark-blue text-center text-lg',
+            !port ? 'pointer-events-none opacity-25' : ''
+          )}
+          target='_blank'
+          rel='noopener noreferrer'
+          href={`http://localhost:${port}`}
+        >
+          <span className='block translate-y-[-4px] transform rounded-lg bg-[#5a3e84] p-3 text-lg duration-[600ms] ease-[cubic-bezier(.3,.7,.4,1)] hover:ease-[cubic-bezier(.3,.7,.4,1.5)] group-hover:translate-y-[-6px] group-hover:duration-[250ms] group-active:translate-y-[-2px] group-active:duration-[34ms]'>
+            open localhost:{port}
+          </span>
+        </a>
       </Main>
     </Page>
   )
